@@ -9,7 +9,7 @@ on:
         required: true
 jobs:
   submit:
-    name: Submit service.upnext to repo-scripts
+    name: Submit service.duskmate.upnext to repo-scripts
     runs-on: ubuntu-latest
     steps:
       - name: Get the submission script
@@ -27,7 +27,7 @@ jobs:
         env:
           TAG: ${{ inputs.tag }}
         run: |
-          version=$(sed -n 's/^<addon id="service.upnext" name="Up Next" version="\([^"]*\)".*/\1/p' addon.xml)
+          version=$(sed -n 's/^<addon id="service.duskmate.upnext" name="Up Next" version="\([^"]*\)".*/\1/p' addon.xml)
           echo "addon.xml version: $version, tag: $TAG"
           [ "v$version" = "$TAG" ]
       - name: Close superseded Kodi PRs
@@ -43,7 +43,7 @@ jobs:
         with:
           kodi-repository: repo-scripts
           kodi-version: matrix
-          addon-id: service.upnext
+          addon-id: service.duskmate.upnext
         env:
           GH_USERNAME: ${{secrets.GH_USERNAME}}
           GH_TOKEN: ${{secrets.GH_TOKEN}}

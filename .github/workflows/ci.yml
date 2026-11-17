@@ -54,7 +54,7 @@ jobs:
       with:
         args: >
           -Dsonar.organization=im85288
-          -Dsonar.projectKey=im85288_service.upnext
+          -Dsonar.projectKey=im85288_service.duskmate.upnext
           -Dsonar.sources=resources/lib/
           -Dsonar.tests=tests/
           -Dsonar.python.coverage.reportPaths=coverage.xml

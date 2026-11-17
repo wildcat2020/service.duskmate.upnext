@@ -5,7 +5,7 @@ on:
     - 'v*'
 jobs:
   build:
-    name: Release service.upnext
+    name: Release service.duskmate.upnext
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -17,7 +17,7 @@ jobs:
       - name: Get zip filename
         id: get-filename
         run: |
-          echo "filename=$(cd ..;ls service.upnext*.zip | head -1)" >> "$GITHUB_OUTPUT"
+          echo "filename=$(cd ..;ls service.duskmate.upnext*.zip | head -1)" >> "$GITHUB_OUTPUT"
       - name: Get body
         id: get-body
         run: |
@@ -63,7 +63,7 @@ jobs:
         with:
           kodi-repository: repo-scripts
           kodi-version: matrix
-          addon-id: service.upnext
+          addon-id: service.duskmate.upnext
         env:
           GH_USERNAME: ${{secrets.GH_USERNAME}}
           GH_TOKEN: ${{secrets.GH_TOKEN}}
