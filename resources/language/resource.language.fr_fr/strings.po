@@ -1,13 +1,13 @@
 # Service Up Next language file
 # Addon Name: Up Next
-# Addon id: service.upnext
+# Addon id: service.duskmate.upnext
 # Addon Provider: im85288
 # Translators:
 # - Thierry, 2019
 # - Kévin Commaille <zecakeh@pm.me>, 2019
 msgid ""
 msgstr ""
-"Project-Id-Version: service.upnext\n"
+"Project-Id-Version: service.duskmate.upnext\n"
 "Report-Msgid-Bugs-To: https://github.com/im85288/service.upnext\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "PO-Revision-Date: 2026-11-11 09:00+0100\n"

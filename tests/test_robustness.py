@@ -20,7 +20,7 @@ def test_failed_popup_does_not_stop_the_service(monkeypatch):
     # run_monitor() only returns if no exception escaped the service loop
     events, attempts = run_monitor(monkeypatch, launch=launch, max_ticks=5)
     assert calls == ['popup']
-    assert events == ['clear service.upnext.dialog', 'disabled']
+    assert events == ['clear service.duskmate.upnext.dialog', 'disabled']
     assert any('Up Next failed' in message for message in attempts['messages'])
 
 
@@ -70,7 +70,9 @@ def make_play_item(api_stub):
 def test_addon_data_with_missing_episodes_is_tolerated(data, expected):
     real_api = quiet_api()
     real_api.data = data
-    assert make_play_item(real_api).get_next() == (expected, 'addon')
+    assert make_play_item(real_api).get_next() == (
+        (expected, 'addon') if expected else (None, 'library')
+    )
 
 
 def test_library_lookup_stops_without_a_playing_episode():

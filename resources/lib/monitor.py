@@ -146,7 +146,7 @@ class UpNextMonitor(Monitor):
             except Exception:  # pylint: disable=broad-exception-caught
                 # One bad episode or add-on payload must not stop the service for the rest of the session
                 self.log('Up Next failed for %s:\n%s' % (current_file, format_exc()), 0)
-                clear_property('service.upnext.dialog')
+                clear_property('service.duskmate.upnext.dialog')
                 replaced = False
             # Only an attempt that showed nothing because the add-on data hadn't arrived yet gets retried
             self._handled_without_data = None if had_addon_data or self.playback_manager.popup_shown else current_file

@@ -9,8 +9,9 @@
 
 This is the Duskmate-maintained, upstream-tracking fork of
 [Up Next](https://github.com/im85288/service.upnext) by im85288. It remains
-GPL-2.0-only and keeps the `service.upnext` add-on ID so existing Kodi add-ons
-can continue to use the standard integration protocol.
+GPL-2.0-only. This fork has the distinct `service.duskmate.upnext` identity and resolves
+episodes through `plugin.video.duskmate`. The upstream integration protocol remains only
+as a legacy fallback.
 
 This Kodi add-on shows a Netflix-style notification for watching the next episode. After a few automatic iterations it asks the user if they are still watching.
 
@@ -95,7 +96,7 @@ For [Addon Integration](https://github.com/im85288/service.upnext/wiki/Integrati
 - Show a Skip intro / Skip recap button when an add-on marks those ranges in a new `skip_segments` field of `upnext_data`, with optional automatic skipping (@im85288)
 - Faster popups for library episodes, especially for long-running shows, and cheaper logging (@im85288)
 - Keep the service running when an episode's metadata is incomplete or the player isn't ready, instead of stopping Up Next until Kodi restarts (@im85288)
-- Clear the `service.upnext.dialog` window property when the popup closes because playback stopped or changed, so skins no longer see it as still open (@im85288)
+- Clear the `service.duskmate.upnext.dialog` window property when the popup closes because playback stopped or changed, so skins no longer see it as still open (@im85288)
 
 ### v1.2.3 (2026-10-21)
 - Close the popup when another episode starts while it is open, so its countdown can no longer skip into the next episode of the old one (@im85288)

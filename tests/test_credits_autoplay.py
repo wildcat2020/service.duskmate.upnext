@@ -207,7 +207,7 @@ def test_credits_expiry_advances_once_and_keeps_still_watching_count(run_credits
     assert popup.properties['credits_remaining'] == '0'
     assert popup.is_auto_advance() and not popup.is_watch_now()
     assert state.played_in_a_row == 2
-    assert 'service.upnext.dialog' not in clock.window
+    assert 'service.duskmate.upnext.dialog' not in clock.window
 
 
 def test_credits_expiry_pauses_and_opens_a_queued_addon_item(run_credits):
@@ -227,7 +227,7 @@ def test_kodi_stopping_closes_the_popup_and_leaves_playback_alone(run_credits, s
     assert clock.ticks == 2  # stopped waiting as soon as Kodi asked
     assert 'close' in events
     assert not any(event in events for event in ('stop', 'addon-next', 'playlist-next', 'watched'))
-    assert 'service.upnext.dialog' not in clock.window
+    assert 'service.duskmate.upnext.dialog' not in clock.window
 
 
 @pytest.mark.parametrize('action', ['back', 'back-at-expiry'])
@@ -283,7 +283,7 @@ def test_replacement_playback_closes_popup_without_advancing(run_credits, delay,
     assert not popup.is_auto_advance()
     assert clock.time < 126
     assert clock.replaced is True
-    assert 'service.upnext.dialog' not in clock.window
+    assert 'service.duskmate.upnext.dialog' not in clock.window
 
 
 def test_error_while_popup_is_open_closes_it(run_credits):
@@ -291,7 +291,7 @@ def test_error_while_popup_is_open_closes_it(run_credits):
     events, _, clock, _ = run_credits(delay=0, runtime='45')
     assert isinstance(clock.error, TypeError)
     assert events.count('close') == 2
-    assert 'service.upnext.dialog' not in clock.window
+    assert 'service.duskmate.upnext.dialog' not in clock.window
 
 
 def test_stop_during_credits_is_called_once_after_close(run_credits):

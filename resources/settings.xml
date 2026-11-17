@@ -41,10 +41,10 @@
     <category label="30800"> <!-- Developer -->
         <setting label="30801" type="lsep"/> <!-- Test the GUI -->
         <setting label="30803" type="bool" id="enableDemoMode" default="false"/>
-        <setting label="30805" type="action" action="RunScript(service.upnext,test_window,script-upnext-upnext.xml)"/>
-        <setting label="30807" type="action" action="RunScript(service.upnext,test_window,script-upnext-upnext-simple.xml)"/>
-        <setting label="30809" type="action" action="RunScript(service.upnext,test_window,script-upnext-stillwatching.xml)"/>
-        <setting label="30811" type="action" action="RunScript(service.upnext,test_window,script-upnext-stillwatching-simple.xml)"/>
-        <setting label="30813" type="action" action="RunScript(service.upnext,test_window,script-upnext-skip.xml)"/>
+        <setting label="30805" type="action" action="RunScript(service.duskmate.upnext,test_window,script-upnext-upnext.xml)"/>
+        <setting label="30807" type="action" action="RunScript(service.duskmate.upnext,test_window,script-upnext-upnext-simple.xml)"/>
+        <setting label="30809" type="action" action="RunScript(service.duskmate.upnext,test_window,script-upnext-stillwatching.xml)"/>
+        <setting label="30811" type="action" action="RunScript(service.duskmate.upnext,test_window,script-upnext-stillwatching-simple.xml)"/>
+        <setting label="30813" type="action" action="RunScript(service.duskmate.upnext,test_window,script-upnext-skip.xml)"/>
     </category>
 </settings>

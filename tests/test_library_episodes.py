@@ -2,6 +2,8 @@
 # GNU General Public License v2.0 (see COPYING or https://www.gnu.org/licenses/gpl-2.0.txt)
 """Tests for picking the next episode from the Kodi library and from playlists"""
 
+import json
+
 import pytest
 import api
 import playitem
@@ -246,3 +248,44 @@ def test_incomplete_addon_data_falls_back_to_kodi_library(monkeypatch, kodi):
     found, source = make_play_item(monkeypatch, api_instance).get_next()
     assert (found['episodeid'], source) == (4, 'library')
     assert api_instance.data == {}
+
+
+def test_duskmate_helper_is_the_canonical_next_episode_resolver(monkeypatch):
+    commands = []
+    response = {
+        'ok': True,
+        'next_episode': {
+            'episodeid': None,
+            'season': 2,
+            'episode': 1,
+            'title': 'A New Season',
+        },
+        'play_url': (
+            'plugin://plugin.video.duskmate/?info=play&tmdb_type=tv&tmdb_id=123'
+            '&season=2&episode=1&allow_playlist=false'
+        ),
+    }
+    monkeypatch.setattr(api, 'getCondVisibility', lambda condition: condition == 'System.HasAddon(plugin.video.duskmate)')
+    monkeypatch.setattr(api, 'executebuiltin', commands.append)
+    monkeypatch.setattr(api, 'get_property', lambda name: json.dumps(response))
+    monkeypatch.setattr(api, 'clear_property', lambda name: None)
+    monkeypatch.setattr(api, 'wait_for_abort', lambda seconds: False)
+
+    instance = library_api()
+    found = instance.resolve_duskmate_upnext({
+        'result': {'item': {
+            'id': 10,
+            'type': 'episode',
+            'tvshowid': -1,
+            'season': 1,
+            'episode': 10,
+            'uniqueid': {'tvshow.tmdb': '123'},
+        }}
+    })
+
+    assert found['episodeid'] == 'tmdb:123:2:1'
+    assert instance.data['resolved_by'] == 'plugin.video.duskmate'
+    assert instance.data['play_url'] == response['play_url']
+    assert len(commands) == 1
+    assert commands[0].startswith('RunScript(plugin.video.duskmate,duskmate_resolve_upnext,')
+    assert 'tmdb_id=123,season=1,episode=10)' in commands[0]

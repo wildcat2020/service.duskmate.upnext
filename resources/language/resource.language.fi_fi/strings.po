@@ -1,6 +1,6 @@
 # Kodi addon language file
 # Addon Name: Up Next
-# Addon id: service.upnext
+# Addon id: service.duskmate.upnext
 # Addon Provider: im85288
 msgid ""
 msgstr ""

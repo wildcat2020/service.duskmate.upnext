@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 # GNU General Public License v2.0 (see COPYING or https://www.gnu.org/licenses/gpl-2.0.txt)
 
-from xbmc import PLAYLIST_VIDEO, PLAYLIST_MUSIC
-from utils import binge_mode, event, get_int, get_setting_bool, get_setting_int, jsonrpc, log as ulog, wait_for_abort
+import json
+from uuid import uuid4
+
+from xbmc import PLAYLIST_VIDEO, PLAYLIST_MUSIC, executebuiltin, getCondVisibility
+from utils import (binge_mode, clear_property, event, get_int, get_property, get_setting_bool,
+                   get_setting_int, jsonrpc, log as ulog, wait_for_abort)
 
 
 # Binge mode moves on this many seconds into the end credits when the setting is 0
@@ -107,6 +111,85 @@ class Api:
 
     def reset_addon_data(self):
         self.data = {}
+
+    @staticmethod
+    def _tvshow_tmdb_id(tvshowid):
+        if get_int({'id': tvshowid}, 'id', -1) < 0:
+            return None
+        result = jsonrpc(method='VideoLibrary.GetTVShows', params={'properties': ['uniqueid']})
+        details = next((
+            show for show in (result.get('result') or {}).get('tvshows', [])
+            if get_int(show, 'tvshowid', -1) == int(tvshowid)
+        ), {})
+        return (details.get('uniqueid') or {}).get('tmdb')
+
+    def resolve_duskmate_upnext(self, now_playing):
+        """Ask Duskmate Helper to resolve the canonical next episode.
+
+        The Helper owns TMDB, merged watched state and library imports. This service owns only
+        the prompt and playback hand-off, so it does not duplicate provider or queue logic.
+        """
+        if not getCondVisibility('System.HasAddon(plugin.video.duskmate)'):
+            return None
+        item = (now_playing or {}).get('result', {}).get('item') or {}
+        if item.get('type') != 'episode':
+            return None
+        season = get_int(item, 'season', -1)
+        episode = get_int(item, 'episode', -1)
+        if season < 0 or episode < 0:
+            return None
+        uniqueid = item.get('uniqueid') or {}
+        tmdb_id = uniqueid.get('tvshow.tmdb') or self._tvshow_tmdb_id(item.get('tvshowid'))
+        if not tmdb_id:
+            self.log('Duskmate Helper lookup skipped: current show has no TMDB series ID', 1)
+            return None
+
+        request_id = uuid4().hex
+        property_name = 'Duskmate.UpNext.Response.%s' % request_id
+        clear_property(property_name)
+        executebuiltin(
+            'RunScript(plugin.video.duskmate,duskmate_resolve_upnext,'
+            'request_id=%s,tmdb_id=%s,season=%s,episode=%s)' % (
+                request_id, tmdb_id, season, episode
+            )
+        )
+        raw = ''
+        # Resolution is metadata-only and normally cache-backed. Bound the wait so provider or
+        # network failures never freeze the current playback or suppress the local fallback.
+        for _ in range(150):
+            raw = get_property(property_name)
+            if raw:
+                break
+            if wait_for_abort(0.1):
+                break
+        clear_property(property_name)
+        if not raw:
+            self.log('Duskmate Helper next-episode lookup timed out', 1)
+            return None
+        try:
+            response = json.loads(raw)
+        except (TypeError, ValueError):
+            self.log('Duskmate Helper returned invalid next-episode JSON', 1)
+            return None
+        next_episode = response.get('next_episode') if response.get('ok') else None
+        play_url = response.get('play_url')
+        if not next_episode or not str(play_url or '').startswith('plugin://plugin.video.duskmate/'):
+            self.log('Duskmate Helper found no playable next episode: %s' % response.get('reason'), 1)
+            return None
+        if next_episode.get('episodeid') is None:
+            next_episode['episodeid'] = 'tmdb:%s:%s:%s' % (
+                tmdb_id, next_episode.get('season'), next_episode.get('episode')
+            )
+        self.data = {
+            'current_episode': {
+                'episodeid': item.get('id'),
+                'tvshowid': item.get('tvshowid'),
+            },
+            'next_episode': next_episode,
+            'play_url': play_url,
+            'resolved_by': 'plugin.video.duskmate',
+        }
+        return next_episode
 
     def addon_data_received(self, data, encoding='base64'):
         self.log('addon_data_received called with data %s' % data, 2)
@@ -245,7 +328,7 @@ class Api:
         else:
             message = 'Sending %(encoding)s data to add-on to play: %(play_info)s'
             self.log(message % dict(encoding=self.encoding, **self.data), 2)  # pylint: disable=use-dict-literal
-            event(message=self.data.get('id'), data=self.data.get('play_info'), sender='upnextprovider', encoding=self.encoding)
+            event(message=self.data.get('id'), data=self.data.get('play_info'), sender='duskmateupnextprovider', encoding=self.encoding)
 
     def handle_addon_lookup_of_next_episode(self):
         if not self.data:
@@ -302,7 +385,8 @@ class Api:
         self.log('Getting details of now playing media', 2)
         result = jsonrpc(method='Player.GetItem', params={
             'playerid': playerid,
-            'properties': ['episode', 'genre', 'playcount', 'plotoutline', 'season', 'showtitle', 'tvshowid'],
+            'properties': ['episode', 'genre', 'playcount', 'plotoutline', 'season', 'showtitle',
+                           'tvshowid', 'uniqueid'],
         })
         self.log('Got details of now playing media %s' % result, 2)
         return result

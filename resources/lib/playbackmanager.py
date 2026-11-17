@@ -214,7 +214,7 @@ class PlaybackManager:
             # Don't leave a frozen popup on screen, the service loop logs the error and carries on
             next_up_page.close()
             still_watching_page.close()
-            clear_property('service.upnext.dialog')
+            clear_property('service.duskmate.upnext.dialog')
             raise
 
     def show_popup_and_wait(self, episode, next_up_page, still_watching_page):
@@ -248,13 +248,13 @@ class PlaybackManager:
             next_up_page.set_credits_countdown(int(ceil(credits_duration)) if credits_deadline is not None else None)
             next_up_page.show()
             self.popup_shown = True
-            set_property('service.upnext.dialog', 'true')
+            set_property('service.duskmate.upnext.dialog', 'true')
             showing_next_up_page = True
         else:
             self.log('showing still watching page as played in a row %s' % self.state.played_in_a_row, 2)
             still_watching_page.show()
             self.popup_shown = True
-            set_property('service.upnext.dialog', 'true')
+            set_property('service.duskmate.upnext.dialog', 'true')
             showing_still_watching_page = True
         while (self.player.isPlaying() and (total_time - play_time > 1)
                and not next_up_page.is_cancel() and not next_up_page.is_watch_now() and not next_up_page.is_auto_advance()
@@ -463,7 +463,7 @@ class PlaybackManager:
         else:
             # FIXME: This is a workaround until we handle this better (see comments in #142)
             # The popup was already closed because playback stopped or changed
-            clear_property('service.upnext.dialog')
+            clear_property('service.duskmate.upnext.dialog')
             return False, False
 
         if next_up_page.is_watch_now() or still_watching_page.is_still_watching():
@@ -473,5 +473,5 @@ class PlaybackManager:
                 timer.reset(acknowledge_bedtime=still_watching_page.is_still_watching())
         else:
             self.state.played_in_a_row += 1
-        clear_property('service.upnext.dialog')
+        clear_property('service.duskmate.upnext.dialog')
         return should_play_default, should_play_non_default

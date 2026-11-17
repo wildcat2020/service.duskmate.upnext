@@ -27,7 +27,7 @@
                 <width>64</width>
                 <height>64</height>
                 <aspectratio>keep</aspectratio>
-                <texture>special://home/addons/service.upnext/resources/media/icon.png</texture>
+                <texture>special://home/addons/service.duskmate.upnext/resources/media/icon.png</texture>
             </control>
             <control type="label">
                 <left>200</left>
@@ -50,7 +50,7 @@
                     <font>font30_title</font>
                     <textcolor>FFFFFFFF</textcolor>
                     <shadowcolor>66000000</shadowcolor>
-                    <label>$ADDON[service.upnext 30024]</label>
+                    <label>$ADDON[service.duskmate.upnext 30024]</label>
                 </control>
                 <!-- The show's logo, or its name when it has none -->
                 <control type="image">
@@ -124,7 +124,7 @@
                         <aligny>center</aligny>
                         <font>font12</font>
                         <textcolor>B3FFFFFF</textcolor>
-                        <label>$ADDON[service.upnext 30009]</label>
+                        <label>$ADDON[service.duskmate.upnext 30009]</label>
                         <visible>!String.IsEmpty(Window.Property(endtime))</visible>
                     </control>
                 </control>
@@ -155,7 +155,7 @@
                     <control type="button" id="10">
                         <width min="260">auto</width>
                         <height>72</height>
-                        <label>$ADDON[service.upnext 30056]</label>
+                        <label>$ADDON[service.duskmate.upnext 30056]</label>
                         <font>font25_title</font>
                         <textoffsetx>44</textoffsetx>
                         <textcolor>FFFFFFFF</textcolor>
@@ -173,7 +173,7 @@
                     <control type="button" id="11">
                         <width min="260">auto</width>
                         <height>72</height>
-                        <label>$ADDON[service.upnext 30035]</label>
+                        <label>$ADDON[service.duskmate.upnext 30035]</label>
                         <font>font25_title</font>
                         <textoffsetx>44</textoffsetx>
                         <textcolor>FFFFFFFF</textcolor>
@@ -191,7 +191,7 @@
                     <control type="button" id="3013">
                         <width min="260">auto</width>
                         <height>72</height>
-                        <label>$ADDON[service.upnext 30034]</label>
+                        <label>$ADDON[service.duskmate.upnext 30034]</label>
                         <font>font25_title</font>
                         <textoffsetx>44</textoffsetx>
                         <textcolor>FFFFFFFF</textcolor>
@@ -321,7 +321,7 @@
                     <height>30</height>
                     <font>font12</font>
                     <textcolor>B3FFFFFF</textcolor>
-                    <label>$ADDON[service.upnext 30057]</label>
+                    <label>$ADDON[service.duskmate.upnext 30057]</label>
                 </control>
                 <control type="label">
                     <left>216</left>

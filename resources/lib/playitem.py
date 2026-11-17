@@ -38,6 +38,17 @@ class PlayItem:
         source = None
         position = self.get_playlist_position()
         has_addon_data = self.api.has_addon_data()
+        now_playing = self.api.get_now_playing()
+
+        # Duskmate Helper is the canonical resolver. It uses TMDB across season boundaries,
+        # merges Kodi/Trakt watched state and schedules a priority library import when needed.
+        resolver = getattr(self.api, 'resolve_duskmate_upnext', None)
+        episode = resolver(now_playing) if resolver else None
+        if episode:
+            current_episode = self.api.handle_addon_lookup_of_current_episode() or {}
+            self.state.current_episode_id = current_episode.get('episodeid')
+            self.state.current_tv_show_id = current_episode.get('tvshowid')
+            return episode, 'duskmate'
 
         # Next video from addon data
         if has_addon_data:
@@ -67,7 +78,7 @@ class PlayItem:
         if not episode:
             current_file = self.player.get_last_file()
             # Get the active player
-            result = self.api.get_now_playing()
+            result = now_playing
             if not self.handle_now_playing_result(result):
                 self.log('Could not identify the playing episode in the library', 1)
                 return None, 'library'
