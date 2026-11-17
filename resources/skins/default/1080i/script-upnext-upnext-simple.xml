@@ -52,10 +52,10 @@
                             <shadowcolor>22000000</shadowcolor>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <texturefocus border="10" colordiffuse="FF172A91">button.png</texturefocus>
-                            <texturenofocus border="10" colordiffuse="FF212121">button.png</texturenofocus>
-                            <alttexturefocus border="10" colordiffuse="FF172A91">button.png</alttexturefocus>
-                            <alttexturenofocus border="10" colordiffuse="FF212121">button.png</alttexturenofocus>
+                            <texturefocus border="10" colordiffuse="FF55DDF4">button.png</texturefocus>
+                            <texturenofocus border="10" colordiffuse="DD161A3F">button.png</texturenofocus>
+                            <alttexturefocus border="10" colordiffuse="FF55DDF4">button.png</alttexturefocus>
+                            <alttexturenofocus border="10" colordiffuse="DD161A3F">button.png</alttexturenofocus>
                             <pulseonselect>no</pulseonselect>
                         </control>
                         <control type="button" id="11">
@@ -72,10 +72,10 @@
                             <shadowcolor>22000000</shadowcolor>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <texturefocus border="10" colordiffuse="FF172A91">button.png</texturefocus>
-                            <texturenofocus border="10" colordiffuse="FF212121">button.png</texturenofocus>
-                            <alttexturefocus border="10" colordiffuse="FF172A91">button.png</alttexturefocus>
-                            <alttexturenofocus border="10" colordiffuse="FF212121">button.png</alttexturenofocus>
+                            <texturefocus border="10" colordiffuse="FF55DDF4">button.png</texturefocus>
+                            <texturenofocus border="10" colordiffuse="DD161A3F">button.png</texturenofocus>
+                            <alttexturefocus border="10" colordiffuse="FF55DDF4">button.png</alttexturefocus>
+                            <alttexturenofocus border="10" colordiffuse="DD161A3F">button.png</alttexturenofocus>
                             <pulseonselect>no</pulseonselect>
                         </control>
                         <control type="button" id="3013">
@@ -90,10 +90,10 @@
                             <shadowcolor>22000000</shadowcolor>
                             <aligny>center</aligny>
                             <align>center</align>
-                            <texturefocus border="10" colordiffuse="FF172A91">button.png</texturefocus>
-                            <texturenofocus border="10" colordiffuse="FF212121">button.png</texturenofocus>
-                            <alttexturefocus border="10" colordiffuse="FF172A91">button.png</alttexturefocus>
-                            <alttexturenofocus border="10" colordiffuse="FF212121">button.png</alttexturenofocus>
+                            <texturefocus border="10" colordiffuse="FF55DDF4">button.png</texturefocus>
+                            <texturenofocus border="10" colordiffuse="DD161A3F">button.png</texturenofocus>
+                            <alttexturefocus border="10" colordiffuse="FF55DDF4">button.png</alttexturefocus>
+                            <alttexturenofocus border="10" colordiffuse="DD161A3F">button.png</alttexturenofocus>
                             <pulseonselect>no</pulseonselect>
                         </control>
                         <control type="label" id="3015">

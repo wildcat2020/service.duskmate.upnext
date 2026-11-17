@@ -2,7 +2,7 @@
 # GNU General Public License v2.0 (see COPYING or https://www.gnu.org/licenses/gpl-2.0.txt)
 
 from xbmc import getCondVisibility, Player, PlayList, Monitor
-from api import Api
+from api import Api, playing_episode_id
 from state import State
 from utils import get_setting_bool
 
@@ -50,6 +50,14 @@ class UpNextPlayer(Player):
     def is_trackable(self):
         """Return True for a library episode, or for any video with a next item in a playlist Up Next follows"""
         if getCondVisibility('videoplayer.content(episodes)'):
+            return True
+        # The VideoPlayer content info-label is presentation state, not an authoritative
+        # library lookup.  It can be empty for an episode opened with Player.Open, while a
+        # skin is changing windows, or when a helper resolves an STRM.  Kodi still exposes
+        # the real library episode through Player.GetItem, so use that before treating the
+        # video as a non-library file.  This keeps the service independent of the skin and
+        # of whichever add-on started playback.
+        if playing_episode_id() is not None:
             return True
         # Non-library videos (files played from a folder, "Play from here") only have a playlist to go on
         if not get_setting_bool('enablePlaylist') or not self.isPlayingVideo():

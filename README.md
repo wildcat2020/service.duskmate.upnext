@@ -5,11 +5,22 @@
 [![Contributors](https://img.shields.io/github/contributors/im85288/service.upnext.svg)](https://github.com/im85288/service.upnext/graphs/contributors)
 [![Greptile: The War on Bugs](https://www.greptile.com/badge.svg)](https://www.greptile.com/?utm_source=oss_badge&utm_medium=readme&utm_campaign=greptile_for_open_source)
 
-# Up Next - Proposes to play the next episode automatically
+# Duskmate Up Next
+
+This is the Duskmate-maintained, upstream-tracking fork of
+[Up Next](https://github.com/im85288/service.upnext) by im85288. It remains
+GPL-2.0-only and keeps the `service.upnext` add-on ID so existing Kodi add-ons
+can continue to use the standard integration protocol.
 
 This Kodi add-on shows a Netflix-style notification for watching the next episode. After a few automatic iterations it asks the user if they are still watching.
 
 A lot of existing add-ons already integrate with this service out-of-the-box.
+
+The Duskmate patch set deliberately stays small. In addition to upstream
+behaviour, Kodi's `Player.GetItem` result is treated as authoritative when a
+skin does not expose `videoplayer.content(episodes)`, and incomplete provider
+signals fall back to the Kodi video library. No Duskmate Android app, account,
+player pack or streaming-provider add-on is required.
 
 ## Settings
 The add-on has various settings to fine-tune the experience, however the default settings should be fine for most.

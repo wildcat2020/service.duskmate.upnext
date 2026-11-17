@@ -237,3 +237,12 @@ def test_addon_data_takes_priority(monkeypatch, kodi, size, expected_source):
     found, source = make_play_item(monkeypatch, library_api(data), playlist_size=size).get_next()
     assert (found['title'], source) == ('Next', expected_source)
     assert not any(method.startswith('VideoLibrary') for method, _ in kodi.calls)
+
+
+def test_incomplete_addon_data_falls_back_to_kodi_library(monkeypatch, kodi):
+    kodi.episodes = SEASON
+    kodi.playing = {'type': 'episode', 'tvshowid': 10, 'season': 1, 'episode': 3, 'showtitle': 'Show'}
+    api_instance = library_api({'current_episode': {'episodeid': 3, 'tvshowid': 10}})
+    found, source = make_play_item(monkeypatch, api_instance).get_next()
+    assert (found['episodeid'], source) == (4, 'library')
+    assert api_instance.data == {}

@@ -26,8 +26,8 @@
                 <aligny>center</aligny>
                 <align>center</align>
                 <!-- The popup's translucent black band; the only control, so no focus colour. -->
-                <texturefocus border="10" colordiffuse="dd000000">button.png</texturefocus>
-                <texturenofocus border="10" colordiffuse="dd000000">button.png</texturenofocus>
+                <texturefocus border="10" colordiffuse="FF55DDF4">button.png</texturefocus>
+                <texturenofocus border="10" colordiffuse="DD161A3F">button.png</texturenofocus>
                 <pulseonselect>no</pulseonselect>
             </control>
         </control>

@@ -7,7 +7,8 @@ import player
 from test_playbackmanager import Stub
 
 
-def make_player(monkeypatch, episode_content=False, playlist_setting=True, position=0, size=3, addon_data=False, video=True):
+def make_player(monkeypatch, episode_content=False, playlist_setting=True, position=0, size=3, addon_data=False,
+                video=True, library_episode_id=None):
     playlists = []
 
     class Playlist:
@@ -32,6 +33,7 @@ def make_player(monkeypatch, episode_content=False, playlist_setting=True, posit
             return video
 
     monkeypatch.setattr(player, 'getCondVisibility', lambda condition: episode_content)
+    monkeypatch.setattr(player, 'playing_episode_id', lambda: library_episode_id)
     monkeypatch.setattr(player, 'get_setting_bool', lambda key: playlist_setting if key == 'enablePlaylist' else False)
     monkeypatch.setattr(player, 'PlayList', Playlist)
     instance = Player()
@@ -69,6 +71,12 @@ def test_playlist_is_only_read_when_needed(monkeypatch):
     assert instance.playlists == []
     instance = make_player(monkeypatch, playlist_setting=False)
     assert not instance.is_trackable()
+    assert instance.playlists == []
+
+
+def test_library_rpc_is_authoritative_when_skin_content_label_is_missing(monkeypatch):
+    instance = make_player(monkeypatch, episode_content=False, playlist_setting=False, library_episode_id=42)
+    assert instance.is_trackable()
     assert instance.playlists == []
 
 

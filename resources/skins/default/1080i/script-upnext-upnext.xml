@@ -18,7 +18,27 @@
             <control type="image">
                 <width>1920</width>
                 <height>1080</height>
-                <texture colordiffuse="B3000000">white.jpg</texture>
+                <texture colordiffuse="D911092A">white.jpg</texture>
+            </control>
+            <!-- Duskmate identity remains visible without competing with episode art. -->
+            <control type="image">
+                <left>120</left>
+                <top>54</top>
+                <width>64</width>
+                <height>64</height>
+                <aspectratio>keep</aspectratio>
+                <texture>special://home/addons/service.upnext/resources/media/icon.png</texture>
+            </control>
+            <control type="label">
+                <left>200</left>
+                <top>58</top>
+                <width>600</width>
+                <height>56</height>
+                <aligny>center</aligny>
+                <font>font25_title</font>
+                <textcolor>FF61E5FF</textcolor>
+                <shadowcolor>99000000</shadowcolor>
+                <label>Duskmate Up Next</label>
             </control>
             <control type="group">
                 <control type="label">
@@ -123,7 +143,7 @@
                         <width>20</width>
                         <height>20</height>
                         <aspectratio>keep</aspectratio>
-                        <texture colordiffuse="FFFF4081">star.png</texture>
+                        <texture colordiffuse="FFFF62C7">star.png</texture>
                         <visible>!String.IsEmpty(Window.Property(rating))</visible>
                     </control>
                     <control type="label">
@@ -170,13 +190,13 @@
                         <font>font25_title</font>
                         <textoffsetx>44</textoffsetx>
                         <textcolor>FFFFFFFF</textcolor>
-                        <focusedcolor>FF000000</focusedcolor>
+                        <focusedcolor>FF07112B</focusedcolor>
                         <selectedcolor>FFFFFFFF</selectedcolor>
                         <shadowcolor>00000000</shadowcolor>
                         <align>center</align>
                         <aligny>center</aligny>
-                        <texturefocus border="36" colordiffuse="FFFFFFFF">pill.png</texturefocus>
-                        <texturenofocus border="36" colordiffuse="33FFFFFF">pill.png</texturenofocus>
+                        <texturefocus border="36" colordiffuse="FF55DDF4">pill.png</texturefocus>
+                        <texturenofocus border="36" colordiffuse="6634296B">pill.png</texturenofocus>
                         <pulseonselect>no</pulseonselect>
                     </control>
                     <control type="button" id="3013">
@@ -186,13 +206,13 @@
                         <font>font25_title</font>
                         <textoffsetx>44</textoffsetx>
                         <textcolor>FFFFFFFF</textcolor>
-                        <focusedcolor>FF000000</focusedcolor>
+                        <focusedcolor>FF07112B</focusedcolor>
                         <selectedcolor>FFFFFFFF</selectedcolor>
                         <shadowcolor>00000000</shadowcolor>
                         <align>center</align>
                         <aligny>center</aligny>
-                        <texturefocus border="36" colordiffuse="FFFFFFFF">pill.png</texturefocus>
-                        <texturenofocus border="36" colordiffuse="33FFFFFF">pill.png</texturenofocus>
+                        <texturefocus border="36" colordiffuse="FF55DDF4">pill.png</texturefocus>
+                        <texturenofocus border="36" colordiffuse="6634296B">pill.png</texturenofocus>
                         <pulseonselect>no</pulseonselect>
                     </control>
                 </control>
@@ -203,7 +223,7 @@
                     <top>160</top>
                     <width>640</width>
                     <height>360</height>
-                    <texture diffuse="rounded.png" colordiffuse="FF1E2230">white.jpg</texture>
+                    <texture diffuse="rounded.png" colordiffuse="FF161A3F">white.jpg</texture>
                     <visible>String.IsEmpty(Window.Property(thumb)) + String.IsEmpty(Window.Property(landscape)) + String.IsEmpty(Window.Property(fanart))</visible>
                 </control>
                 <control type="textbox">
@@ -261,7 +281,7 @@
                     <righttexture></righttexture>
                     <overlaytexture></overlaytexture>
                     <texturebg colordiffuse="00FFFFFF">white.jpg</texturebg>
-                    <midtexture colordiffuse="FFFF4081">white.jpg</midtexture>
+                    <midtexture colordiffuse="FF55DDF4">white.jpg</midtexture>
                 </control>
             </control>
             <!-- The episode now finishing: from the player, or the preview's

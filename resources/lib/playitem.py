@@ -49,14 +49,22 @@ class PlayItem:
                 self.state.current_tv_show_id = current_episode.get('tvshowid')
                 self.state.played_in_a_row = 1
             source = 'addon' if not position else 'playlist'
+            if not episode:
+                # Provider announcements may arrive incomplete or describe an item that has
+                # already changed.  They are an enhancement, not a reason to ignore Kodi's
+                # own library.  Clear the unusable payload so queuing and playback below use
+                # the resolved library episode rather than a stale provider play action.
+                self.log('Add-on supplied no next episode; falling back to Kodi library', 1)
+                self.api.reset_addon_data()
+                source = None
 
         # Next video from non-addon playlist
-        elif position:
+        if not episode and not has_addon_data and position:
             episode = self.api.get_next_in_playlist(position)
             source = 'playlist'
 
         # Next video from Kodi library
-        else:
+        if not episode:
             current_file = self.player.get_last_file()
             # Get the active player
             result = self.api.get_now_playing()
