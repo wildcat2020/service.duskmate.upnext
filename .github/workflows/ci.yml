@@ -49,10 +49,3 @@ jobs:
       if: contains(env.TESTS_ENABLED, matrix.python-version)
       run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.xml
       continue-on-error: true
-          -Dsonar.sources=resources/lib/
-          -Dsonar.tests=tests/
-          -Dsonar.python.coverage.reportPaths=coverage.xml
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      continue-on-error: true
