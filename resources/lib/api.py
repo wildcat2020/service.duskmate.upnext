@@ -18,6 +18,11 @@ EPISODE_PROPERTIES = ['art', 'dateadded', 'episode', 'file', 'firstaired', 'last
                       'showtitle', 'streamdetails', 'title', 'tvshowid', 'writer']
 
 
+def _log(msg, level=2):
+    """Log an API message without expanding Api's public interface."""
+    ulog(msg, name='Api', level=level)
+
+
 def credits_autoplay_deadline(data, play_time, total_time):
     """Return an opt-in playback deadline only when a credits offset is known."""
     delay = get_setting_int('autoPlayCreditsTime')
@@ -102,10 +107,6 @@ class Api:
         self.data = {}
         self.encoding = 'base64'
 
-    def log(self, msg, level=2):
-        """Log wrapper"""
-        ulog(msg, name=self.__class__.__name__, level=level)
-
     def has_addon_data(self):
         return self.data
 
@@ -141,7 +142,7 @@ class Api:
         uniqueid = item.get('uniqueid') or {}
         tmdb_id = uniqueid.get('tvshow.tmdb') or self._tvshow_tmdb_id(item.get('tvshowid'))
         if not tmdb_id:
-            self.log('Duskmate Helper lookup skipped: current show has no TMDB series ID', 1)
+            _log('Duskmate Helper lookup skipped: current show has no TMDB series ID', 1)
             return None
 
         request_id = uuid4().hex
@@ -164,17 +165,17 @@ class Api:
                 break
         clear_property(property_name)
         if not raw:
-            self.log('Duskmate Helper next-episode lookup timed out', 1)
+            _log('Duskmate Helper next-episode lookup timed out', 1)
             return None
         try:
             response = json.loads(raw)
         except (TypeError, ValueError):
-            self.log('Duskmate Helper returned invalid next-episode JSON', 1)
+            _log('Duskmate Helper returned invalid next-episode JSON', 1)
             return None
         next_episode = response.get('next_episode') if response.get('ok') else None
         play_url = response.get('play_url')
         if not next_episode or not str(play_url or '').startswith('plugin://plugin.video.duskmate/'):
-            self.log('Duskmate Helper found no playable next episode: %s' % response.get('reason'), 1)
+            _log('Duskmate Helper found no playable next episode: %s' % response.get('reason'), 1)
             return None
         if next_episode.get('episodeid') is None:
             next_episode['episodeid'] = 'tmdb:%s:%s:%s' % (
@@ -192,7 +193,7 @@ class Api:
         return next_episode
 
     def addon_data_received(self, data, encoding='base64'):
-        self.log('addon_data_received called with data %s' % data, 2)
+        _log('addon_data_received called with data %s' % data, 2)
         self.data = data
         self.encoding = encoding
 
@@ -301,7 +302,7 @@ class Api:
 
         # Don't check if next item is an episode, just use it if it is there
         if not item:  # item.get('type') != 'episode':
-            self.log('Error: no next item found in playlist', 1)
+            _log('Error: no next item found in playlist', 1)
             return None
         item = item[0]
 
@@ -318,28 +319,28 @@ class Api:
         if get_int(item, 'episode') == -1:
             item['episode'] = ''
 
-        self.log('Next item in playlist: %s' % item, 2)
+        _log('Next item in playlist: %s' % item, 2)
         return item
 
     def play_addon_item(self):
         if self.data.get('play_url'):
-            self.log('Playing the next episode directly: %(play_url)s' % self.data, 2)
+            _log('Playing the next episode directly: %(play_url)s' % self.data, 2)
             jsonrpc(method='Player.Open', params={'item': {'file': self.data.get('play_url')}})
         else:
             message = 'Sending %(encoding)s data to add-on to play: %(play_info)s'
-            self.log(message % dict(encoding=self.encoding, **self.data), 2)  # pylint: disable=use-dict-literal
+            _log(message % dict(encoding=self.encoding, **self.data), 2)  # pylint: disable=use-dict-literal
             event(message=self.data.get('id'), data=self.data.get('play_info'), sender='duskmateupnextprovider', encoding=self.encoding)
 
     def handle_addon_lookup_of_next_episode(self):
         if not self.data:
             return None
-        self.log('handle_addon_lookup_of_next_episode episode returning data %s' % self.data.get('next_episode'), 2)
+        _log('handle_addon_lookup_of_next_episode episode returning data %s' % self.data.get('next_episode'), 2)
         return self.data.get('next_episode')
 
     def handle_addon_lookup_of_current_episode(self):
         if not self.data:
             return None
-        self.log('handle_addon_lookup_of_current episode returning data %s' % self.data.get('current_episode'), 2)
+        _log('handle_addon_lookup_of_current episode returning data %s' % self.data.get('current_episode'), 2)
         return self.data.get('current_episode')
 
     def notification_time(self, total_time=None):
@@ -375,20 +376,20 @@ class Api:
             if wait_for_abort(0.1):
                 return None
         else:
-            self.log('No active player found', 1)
+            _log('No active player found', 1)
             return None
-        self.log('Got active player %s' % result, 2)
+        _log('Got active player %s' % result, 2)
 
         playerid = result.get('result')[0].get('playerid')
 
         # Get details of the playing media
-        self.log('Getting details of now playing media', 2)
+        _log('Getting details of now playing media', 2)
         result = jsonrpc(method='Player.GetItem', params={
             'playerid': playerid,
             'properties': ['episode', 'genre', 'playcount', 'plotoutline', 'season', 'showtitle',
                            'tvshowid', 'uniqueid'],
         })
-        self.log('Got details of now playing media %s' % result, 2)
+        _log('Got details of now playing media %s' % result, 2)
         return result
 
     def handle_kodi_lookup_of_episode(self, tvshowid, current_file, include_watched, current_episode_id):
@@ -402,7 +403,7 @@ class Api:
         if not result.get('result'):
             return None
 
-        self.log('Got %d episodes of the show' % len(result.get('result', {}).get('episodes', [])), 2)
+        _log('Got %d episodes of the show' % len(result.get('result', {}).get('episodes', [])), 2)
 
         # Find the next unwatched and the newest added episodes
         episode = self.find_next_episode(result, current_file, include_watched, current_episode_id)
@@ -465,5 +466,5 @@ class Api:
                 return episode
 
         # No next episode found
-        self.log('No next episode found', 1)
+        _log('No next episode found', 1)
         return None

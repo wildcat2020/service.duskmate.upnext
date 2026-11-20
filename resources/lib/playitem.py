@@ -43,7 +43,7 @@ class PlayItem:
         # Duskmate Helper is the canonical resolver. It uses TMDB across season boundaries,
         # merges Kodi/Trakt watched state and schedules a priority library import when needed.
         resolver = getattr(self.api, 'resolve_duskmate_upnext', None)
-        episode = resolver(now_playing) if resolver else None
+        episode = resolver(now_playing) if callable(resolver) else None
         if episode:
             current_episode = self.api.handle_addon_lookup_of_current_episode() or {}
             self.state.current_episode_id = current_episode.get('episodeid')
