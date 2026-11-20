@@ -48,13 +48,6 @@ jobs:
       if: contains(env.TESTS_ENABLED, matrix.python-version)
       run: sed -i 's@'$GITHUB_WORKSPACE'@/github/workspace/@g' coverage.xml
       continue-on-error: true
-    - name: Analyze with SonarCloud
-      if: contains(env.TESTS_ENABLED, matrix.python-version)
-      uses: SonarSource/sonarcloud-github-action@master
-      with:
-        args: >
-          -Dsonar.organization=im85288
-          -Dsonar.projectKey=im85288_service.duskmate.upnext
           -Dsonar.sources=resources/lib/
           -Dsonar.tests=tests/
           -Dsonar.python.coverage.reportPaths=coverage.xml

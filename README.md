@@ -1,9 +1,6 @@
-[![GitHub release](https://img.shields.io/github/release/im85288/service.upnext.svg)](https://github.com/im85288/service.upnext/releases)
-[![CI](https://github.com/im85288/service.upnext/workflows/CI/badge.svg)](https://github.com/im85288/service.upnext/actions?query=workflow:CI)
-[![Codecov status](https://img.shields.io/codecov/c/github/im85288/service.upnext/master)](https://codecov.io/gh/im85288/service.upnext/branch/master)
-[![License: GPLv2](https://img.shields.io/badge/License-GPLv2-yellow.svg)](https://opensource.org/licenses/GPL-2.0)
-[![Contributors](https://img.shields.io/github/contributors/im85288/service.upnext.svg)](https://github.com/im85288/service.upnext/graphs/contributors)
-[![Greptile: The War on Bugs](https://www.greptile.com/badge.svg)](https://www.greptile.com/?utm_source=oss_badge&utm_medium=readme&utm_campaign=greptile_for_open_source)
+[![GitHub release](https://img.shields.io/github/v/release/wildcat2020/service.duskmate.upnext)](https://github.com/wildcat2020/service.duskmate.upnext/releases)
+[![CI](https://github.com/wildcat2020/service.duskmate.upnext/actions/workflows/ci.yml/badge.svg)](https://github.com/wildcat2020/service.duskmate.upnext/actions/workflows/ci.yml)
+[![License: GPLv2](https://img.shields.io/badge/License-GPLv2-yellow.svg)](LICENSE.txt)
 
 # Duskmate Up Next
 

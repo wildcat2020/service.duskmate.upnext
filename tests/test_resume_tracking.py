@@ -273,7 +273,7 @@ def test_wake_restores_still_watching_count_after_real_state_reset(sleeping_moni
     assert sleeping_monitor.player.state.played_in_a_row == 3
     assert manager_state.played_in_a_row == 3
     lookup = Stub(state=manager_state, get_playlist_position=lambda: False, log=lambda *args: None,
-                  api=Stub(has_addon_data=lambda: True,
+                  api=Stub(has_addon_data=lambda: True, get_now_playing=lambda: {},
                            handle_addon_lookup_of_next_episode=lambda: {'episodeid': 'next'},
                            handle_addon_lookup_of_current_episode=lambda: {'episodeid': 'current', 'tvshowid': current_show_id}))
     episode, source = playitem.PlayItem.get_next(lookup)

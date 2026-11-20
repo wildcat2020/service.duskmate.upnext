@@ -20,7 +20,7 @@ def controls(name):
 
 
 def label_ids(control):
-    return set(re.findall(r'\$ADDON\[service\.upnext (\d+)\]', control.findtext('label') or ''))
+    return set(re.findall(r'\$ADDON\[service\.duskmate\.upnext (\d+)\]', control.findtext('label') or ''))
 
 
 @pytest.mark.parametrize('name', POPUPS)
